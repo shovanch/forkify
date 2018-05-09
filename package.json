@@ -1,0 +1,27 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "modern JS project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server --mode development --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shovanch/forkify.git"
+  },
+  "author": "Shovan Chatterjee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shovanch/forkify/issues"
+  },
+  "homepage": "https://github.com/shovanch/forkify#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.15",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
