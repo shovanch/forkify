@@ -28,12 +28,17 @@ const controlSearch = async () => {
     searchView.clearResults();
     renderLoader(elements.searchResults);
 
-    // 4. Search for recipes
-    await state.search.getResults();
+    try {
+      // 4. Search for recipes
+      await state.search.getResults();
 
-    // 5. Render results to the UI
-    clearLoader();
-    searchView.renderResults(state.search.result);
+      // 5. Render results to the UI
+      clearLoader();
+      searchView.renderResults(state.search.result);
+    } catch (error) {
+      alert("Error in search");
+      clearLoader();
+    }
   }
 };
 
@@ -66,25 +71,28 @@ const controlRecipe = async () => {
   // Get recipe ID from url
   const id = window.location.hash.replace("#", "");
 
-  // Prepare UI for results
+  if (id) {
+    // Prepare UI for results
 
-  // Create new recipe object
-  state.recipe = new Recipe(id);
+    // Create new recipe object
+    state.recipe = new Recipe(id);
 
-  try {
-    // Get recipe data
-    await state.recipe.getRecipe();
+    try {
+      // Get recipe data
+      await state.recipe.getRecipe();
 
-    // Calculate servings and time
-    state.recipe.calcTime();
-    state.recipe.calcServings();
+      // Calculate servings and time
+      state.recipe.calcTime();
+      state.recipe.calcServings();
 
-    console.log(state.recipe);
-  } catch (error) {
-    console.log(error);
+      console.log(state.recipe);
+    } catch (error) {
+      alert("Error in Recipeview");
+    }
+
+    // Render recipe
   }
-
-  // Redner recipe
 };
 
-window.addEventListener("hashchange", controlRecipe);
+// fire controlrecipe if the hashchange or on pageload
+["hashchange", "load"].forEach(event => addEventListener(event, controlRecipe));
