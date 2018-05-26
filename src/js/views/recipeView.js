@@ -1,7 +1,31 @@
 import { elements } from "./base";
+import { Fraction } from "fractional";
 
 export const clearRecipe = () => {
   elements.recipe.innerHTML = "";
+};
+
+const formatCount = count => {
+  if (count) {
+    // 3.75 = 3 3/4
+    const [ing, dec] = count
+      .toString()
+      .split(".")
+      .map(el => parseInt(el, 10));
+
+    // if there is no decimal part
+    if (!dec) return count;
+
+    // if the integer part is 0
+    if (ing === 0) {
+      const fr = new Fraction(count);
+      return `${fr.numerator}/${fr.denominator}`;
+    } else {
+      // if there is both integer and decimal part
+      const fr = new Fraction(count - ing);
+      return `${ing} ${fr.numerator}/${fr.denominator}`;
+    }
+  }
 };
 const createIngredient = ingredient =>
   `
@@ -9,7 +33,7 @@ const createIngredient = ingredient =>
     <svg class="recipe__icon">
       <use href="img/icons.svg#icon-check" />
     </svg>
-    <div class="recipe__count">${ingredient.count}</div>
+    <div class="recipe__count">${formatCount(ingredient.count)}</div>
     <div class="recipe__ingredient">
       <span class="recipe__unit">${ingredient.unit}</span>
       ${ingredient.ingredient}
