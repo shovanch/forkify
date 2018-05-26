@@ -60,12 +60,6 @@ elements.searchResultsPages.addEventListener("click", e => {
 /**
  * RECIPE CONTROLLER
  **/
-/* const r = new Recipe(46956);
-r.getRecipe();
-
-console.log(r);
-r.calcTime();
-r.calcServings(); */
 
 const controlRecipe = async () => {
   // Get recipe ID from url
@@ -80,6 +74,7 @@ const controlRecipe = async () => {
     try {
       // Get recipe data
       await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
 
       // Calculate servings and time
       state.recipe.calcTime();
@@ -88,6 +83,7 @@ const controlRecipe = async () => {
       console.log(state.recipe);
     } catch (error) {
       alert("Error in Recipeview");
+      console.log(error);
     }
 
     // Render recipe

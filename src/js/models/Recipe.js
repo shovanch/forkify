@@ -29,4 +29,84 @@ export default class Recipe {
   calcServings() {
     this.servings = 4;
   }
+
+  parseIngredients() {
+    const unitsLong = [
+      "tablespoons",
+      "tablespoon",
+      "teaspoons",
+      "teaspoon",
+      "ounces",
+      "ounce",
+      "cups",
+      "pounds"
+    ];
+    const unitsShort = [
+      "tbsp",
+      "tbsp",
+      "tsp",
+      "tsp",
+      "oz",
+      "oz",
+      "cup",
+      "pound"
+    ];
+
+    // process the ingredients array
+    const newIngredients = this.ingredients.map(el => {
+      // 1. Standardize units
+      let ingredient = el.toLowerCase();
+      unitsLong.forEach((unit, i) => {
+        ingredient = ingredient.replace(unit, unitsShort[i]);
+      });
+
+      // 2. Remove parentheses
+      ingredient = ingredient.replace(/ *\([^)]*\) */g, " ");
+
+      // 3. Parse ingredients into count, unit, ingredient
+      // split the array items
+      const ingArr = ingredient.split(" ");
+      const unitIndex = ingArr.findIndex(arrEl => unitsShort.includes(arrEl));
+
+      let objIng;
+      if (unitIndex > -1) {
+        // unit exits
+        // cut the elements the before the unit and store in an array
+        const arrCount = ingArr.slice(0, unitIndex);
+
+        let count;
+        // there is single digit
+        if (arrCount.length === 1) {
+          count = eval(ingArr[0].replace("-", "+"));
+        } else {
+          count = eval(ingArr.slice(0, unitIndex).join("+"));
+        }
+
+        objIng = {
+          count,
+          unit: ingArr[unitIndex],
+          ingredient: ingArr.slice(unitIndex + 1).join(" ")
+        };
+      } else if (parseInt(ingArr[0], 10)) {
+        // no unit, but a number
+        objIng = {
+          count: parseInt(ingArr[0], 10),
+          unit: "",
+          ingredient: ingArr.slice(1).join(" ")
+        };
+      } else if (unitIndex === -1) {
+        // unit doesnt exits
+        objIng = {
+          count: 1,
+          unit: "",
+          ingredient
+        };
+      }
+
+      return objIng;
+    });
+
+    // set the ingredients as the ingredients property
+    this.ingredients = newIngredients;
+  }
 }
