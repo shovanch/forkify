@@ -125,4 +125,3 @@ export const renderRecipe = recipe => {
 
   elements.recipe.insertAdjacentHTML("afterbegin", markup);
 };
- // "deploy": "npm run build && git commit -m 'Deploy build to gh-pages' -- ./dist  && git subtree push --prefix dist origin gh-pages"
