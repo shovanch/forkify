@@ -1,5 +1,6 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
+import List from "./models/List";
 import { elements, renderLoader, clearLoader } from "./views/base";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
@@ -84,8 +85,6 @@ const controlRecipe = async () => {
       // Calculate servings and time
       state.recipe.calcTime();
       state.recipe.calcServings();
-
-      console.log(state.recipe);
     } catch (error) {
       alert("Error in Recipeview");
       console.log(error);
@@ -113,6 +112,9 @@ elements.recipe.addEventListener("click", e => {
     state.recipe.updateServings("inc");
     recipeView.updateRecipeServings(state.recipe);
   }
-
-  console.log(state.recipe);
 });
+
+/**
+ * LIST CONTROLLER
+ **/
+window.l = new List();
