@@ -110,4 +110,17 @@ export default class Recipe {
     // set the ingredients as the ingredients property
     this.ingredients = newIngredients;
   }
+
+  updateServings(type) {
+    // Check servings update type
+    const newServings = type === "dec" ? this.servings - 1 : this.servings + 1;
+
+    // Update ingredients count
+    this.ingredients.forEach(ing => {
+      const fr = newServings / this.servings;
+      ing.count *= fr;
+    });
+
+    this.servings = newServings;
+  }
 }

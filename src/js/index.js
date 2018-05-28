@@ -99,3 +99,20 @@ const controlRecipe = async () => {
 
 // fire controlrecipe if the hashchange or on pageload
 ["hashchange", "load"].forEach(event => addEventListener(event, controlRecipe));
+
+// Update servings button event handler
+elements.recipe.addEventListener("click", e => {
+  if (e.target.matches(".btn-decrease, .btn-decrease *")) {
+    // decrease button clicked
+    if (state.recipe.servings > 1) {
+      state.recipe.updateServings("dec");
+      recipeView.updateRecipeServings(state.recipe);
+    }
+  } else if (e.target.matches(".btn-increase, .btn-increase *")) {
+    // increase button clicked
+    state.recipe.updateServings("inc");
+    recipeView.updateRecipeServings(state.recipe);
+  }
+
+  console.log(state.recipe);
+});
