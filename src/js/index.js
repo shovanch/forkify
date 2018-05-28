@@ -4,6 +4,7 @@ import List from "./models/List";
 import { elements, renderLoader, clearLoader } from "./views/base";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
+import * as listView from "./views/listView";
 
 /** Global state of the app
  * - Search Object
@@ -13,6 +14,7 @@ import * as recipeView from "./views/recipeView";
  */
 
 const state = {};
+window.state = state;
 
 /**
  * SEARCH CONTROLLER
@@ -99,6 +101,37 @@ const controlRecipe = async () => {
 // fire controlrecipe if the hashchange or on pageload
 ["hashchange", "load"].forEach(event => addEventListener(event, controlRecipe));
 
+/**
+ * LIST CONTROLLER
+ **/
+const controlList = () => {
+  // create a new list, if none exists yet
+  if (!state.list) state.list = new List();
+
+  // Add all the ingredients to the list
+  state.recipe.ingredients.forEach(el => {
+    const item = state.list.addItems(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  });
+};
+
+// Delete and update list items
+elements.shopping.addEventListener("click", e => {
+  // get the id of the clicked element
+  const id = e.target.closest(".shopping__item").dataset.itemid;
+
+  // delete and update the list
+  if (e.target.matches(".shopping__delete, .shopping__delete *")) {
+    state.list.deleteItem(id);
+    listView.deleteItem(id);
+  } else if (e.target.matches(".shopping__count-value")) {
+    // get the new value
+    const value = parseFloat(e.target.value, 10);
+    // Update in list
+    state.list.updateItems(id, value);
+  }
+});
+
 // Update servings button event handler
 elements.recipe.addEventListener("click", e => {
   if (e.target.matches(".btn-decrease, .btn-decrease *")) {
@@ -111,10 +144,7 @@ elements.recipe.addEventListener("click", e => {
     // increase button clicked
     state.recipe.updateServings("inc");
     recipeView.updateRecipeServings(state.recipe);
+  } else if (e.target.matches(".recipe__btn-add, .recipe__btn-add *")) {
+    controlList();
   }
 });
-
-/**
- * LIST CONTROLLER
- **/
-window.l = new List();
