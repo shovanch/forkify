@@ -96,7 +96,7 @@ const controlRecipe = async () => {
 
     // Render recipe
     clearLoader();
-    recipeView.renderRecipe(state.recipe);
+    recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
   }
 };
 
@@ -137,6 +137,8 @@ elements.shopping.addEventListener("click", e => {
 /**
  * LIKES CONTROLLER
  **/
+state.likes = new Likes();
+
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
   const currentId = state.recipe.id;
@@ -151,15 +153,20 @@ const controlLike = () => {
       state.recipe.img
     );
     // toggle the like button
+    likesView.toggleLikeBtn(true);
     // add liked recipe to liked-list UI
-    console.log(state.likes);
+    likesView.rednerLikeMenu(newLike);
   } else {
     // remove liked recipe from state
     state.likes.deleteLike(currentId);
     // toggle the like button
+    likesView.toggleLikeBtn(false);
+
     // remove liked recipe frin liked-list UI
-    console.log(state.likes);
+    likesView.deleteLike(currentId);
   }
+
+  likesView.toggleLikeMenu(state.likes.likesCount());
 };
 
 /**
