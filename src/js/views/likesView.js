@@ -12,7 +12,7 @@ export const toggleLikeMenu = numLikes => {
   elements.likesMenu.style.visibility = numLikes > 0 ? "visible" : "hidden";
 };
 
-export const rednerLikeMenu = like => {
+export const renderLikeMenu = like => {
   const markup = `
     <li>
         <a class="likes__link" href="#${like.id}">

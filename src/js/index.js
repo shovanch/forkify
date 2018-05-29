@@ -137,8 +137,6 @@ elements.shopping.addEventListener("click", e => {
 /**
  * LIKES CONTROLLER
  **/
-state.likes = new Likes();
-
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
   const currentId = state.recipe.id;
@@ -162,12 +160,26 @@ const controlLike = () => {
     // toggle the like button
     likesView.toggleLikeBtn(false);
 
-    // remove liked recipe frin liked-list UI
+    // remove liked recipe from liked-list UI
     likesView.deleteLike(currentId);
   }
 
   likesView.toggleLikeMenu(state.likes.likesCount());
 };
+
+// on pageload, restore likes from localstorage
+window.addEventListener("load", () => {
+  state.likes = new Likes();
+
+  // read the data from localstorage
+  state.likes.readData();
+
+  // render the items to the list menu
+  state.likes.likes.forEach(like => likesView.renderLikeMenu(like));
+
+  // set list-menu btn visibity
+  likesView.toggleLikeMenu(state.likes.likesCount());
+});
 
 /**
  * HANDLING SHOPPING LIST EVENTS
