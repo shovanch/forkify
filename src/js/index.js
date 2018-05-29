@@ -16,8 +16,6 @@ import * as likesView from "./views/likesView";
  **/
 
 const state = {};
-window.state = state;
-
 /**
  * SEARCH CONTROLLER
  **/
